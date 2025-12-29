@@ -2,36 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Open Happ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Redirecting…</title>
 
   <style>
     body {
-      font-family: system-ui, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background: #0d1117;
       color: #e6edf3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
+      font-family: system-ui, sans-serif;
     }
     .box {
       background: #161b22;
       padding: 24px;
       border-radius: 12px;
       text-align: center;
-      max-width: 480px;
+      max-width: 520px;
     }
     a {
       display: inline-block;
       margin-top: 16px;
-      padding: 12px 20px;
+      padding: 14px 22px;
       background: #238636;
       color: #fff;
       text-decoration: none;
       border-radius: 8px;
-      font-weight: 600;
+      font-weight: 700;
       word-break: break-all;
     }
   </style>
@@ -39,23 +39,22 @@
 
 <body>
   <div class="box">
-    <div id="status">Opening Happ…</div>
-    <a id="manual" href="#">Open manually</a>
+    <div id="text">برای اضافه شدن سابسکریپشن، روی دکمه زیر کلیک کن</div>
+    <a id="open">Open in Happ</a>
   </div>
 
   <script>
     let target = null;
 
-    // 1️⃣ حالت استاندارد ?redirect_to=
+    // حالت query
     const params = new URLSearchParams(window.location.search);
     if (params.has("redirect_to")) {
       target = params.get("redirect_to");
     }
 
-    // 2️⃣ حالت path-based (…/happ://crypt4/...)
+    // حالت path-based
     if (!target) {
       const path = window.location.pathname;
-
       const idx = path.indexOf("happ://");
       if (idx !== -1) {
         target = path.slice(idx);
@@ -63,9 +62,16 @@
     }
 
     if (!target) {
-      document.getElementById("status").innerText =
-        "Invalid or missing redirect target";
-      throw new Error("No redirect target");
+      document.getElementById("text").innerText =
+        "لینک نامعتبر است";
+      throw new Error("No happ link");
     }
 
-    const manual = document.getElementBy
+    const btn = document.getElementById("open");
+    btn.href = target;
+
+    // ❗ هیچ auto redirect اینجا نداریم
+    // فقط کلیک کاربر
+  </script>
+</body>
+</html>
