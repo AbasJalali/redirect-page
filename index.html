@@ -1,96 +1,145 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Open in Happ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #0d1117;
-      color: #e6edf3;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    }
-    .box {
-      background: #161b22;
-      padding: 22px;
-      border-radius: 12px;
-      max-width: 520px;
-      width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,.4);
-    }
-    h3 {
-      margin-top: 0;
-      font-size: 16px;
-      text-align: center;
-    }
-    textarea {
-      width: 100%;
-      height: 120px;
-      background: #0d1117;
-      color: #22c55e;
-      border: 1px solid #30363d;
-      border-radius: 8px;
-      padding: 10px;
-      font-family: monospace;
-      font-size: 12px;
-      resize: none;
-    }
-    button {
-      margin-top: 12px;
-      width: 100%;
-      padding: 12px;
-      font-size: 15px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      background: #22c55e;
-      color: #052e16;
-      font-weight: 700;
-    }
-    .hint {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #8b949e;
-      text-align: center;
-    }
-  </style>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect Page</title>
+    <style>
+        /* Импорт шрифта */
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;600&display=swap');
 
-<body>
-  <div class="box">
-    <h3>افزودن سابسکریپشن به Happ</h3>
-    <textarea id="link" readonly></textarea>
-    <button onclick="copyLink()">📋 کپی لینک</button>
-    <div class="hint">
-      لینک را کپی کن و داخل برنامه Happ پیست کن
-    </div>
-  </div>
+        /* Основные стили для тела */
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-  <script>
-    // دقیقاً مثل maposia
-    const params = new URLSearchParams(window.location.search);
-    const redirectTo = params.get('redirect_to');
+        /* Светлая тема */
+        body.light {
+            background-color: #F5F5F5;
+            color: #333;
+        }
 
-    const textarea = document.getElementById('link');
+        /* Темная тема */
+        body.dark {
+            background-color: #161b22;
+            color: #ddd;
+        }
 
-    if (!redirectTo) {
-      textarea.value = 'لینکی ارسال نشده';
+        /* Фон с текстурой */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://i.ibb.co/HqRwCSL/Pattern-Copy-1.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-top: 20px;
+            color: #888;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #ffffff;
+            background: #0b7285;
+            background-size: 400% 400%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: gradientAnimation 5s ease-in-out infinite;
+        }
+
+        a.button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+    </style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const currentURL = window.location.href;
+    let redirectTo = decodeURIComponent(currentURL.split('redirect_to=')[1] || '');
+    const language = navigator.language || navigator.userLanguage;
+    const isRussian = language.startsWith('ru');
+
+    const titleText = isRussian ? 'Продолжить' : 'Continue';
+    const buttonText = isRussian ? 'Нажмите сюда, чтобы продолжить' : 'Click here to proceed';
+    const instructionsText = isRussian
+      ? 'Переадресация произойдёт автоматически в течение 5 секунд.\nЕсли этого не произошло, нажмите на кнопку выше.'
+      : 'You will be redirected automatically within 5 seconds.\nIf nothing happens, please click the button above.';
+
+    // document.getElementById('title').innerText = titleText;
+    const linkEl = document.getElementById('redirectLink');
+    linkEl.innerText = buttonText;
+    linkEl.href = redirectTo;
+    document.getElementById('instructions').innerText = instructionsText;
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark');
     } else {
-      textarea.value = decodeURIComponent(redirectTo);
+      document.body.classList.add('light');
     }
 
-    function copyLink() {
-      textarea.focus();
-      textarea.select();
-      textarea.setSelectionRange(0, textarea.value.length);
-      document.execCommand('copy');
-      alert('لینک کپی شد ✅\nداخل Happ پیست کن');
+    let redirectTimer;
+
+    if (redirectTo) {
+      redirectTimer = setTimeout(() => {
+        window.location.href = redirectTo;
+      }, 5000);
+
+      linkEl.addEventListener('click', function () {
+        clearTimeout(redirectTimer);
+      });
+    } else {
+      alert(isRussian ? 'Не указана ссылка для перенаправления.' : 'No redirect link specified.');
     }
-  </script>
+  });
+</script>
+</head>
+<body>
+    <div class="container">
+        <!-- <h1 id="title">Continue</h1> -->
+        <a id="redirectLink" class="button" href="#" target="_blank">Click here to proceed</a>
+        <p id="instructions">To continue, please click the button above.</p>
+    </div>
 </body>
 </html>
