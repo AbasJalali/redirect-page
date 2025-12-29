@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8" />
-  <title>Add to Happ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Happ Redirect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-family: system-ui, sans-serif;
       background: #0f172a;
       color: #e5e7eb;
       display: flex;
@@ -17,16 +17,10 @@
     }
     .box {
       background: #020617;
-      border-radius: 12px;
-      padding: 24px;
-      max-width: 520px;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
       width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,.4);
-    }
-    h1 {
-      margin-top: 0;
-      font-size: 18px;
-      text-align: center;
     }
     textarea {
       width: 100%;
@@ -34,26 +28,26 @@
       background: #020617;
       color: #22c55e;
       border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 10px;
+      border-radius: 6px;
+      padding: 8px;
       font-family: monospace;
       font-size: 12px;
       resize: none;
     }
     button {
+      margin-top: 10px;
       width: 100%;
-      margin-top: 12px;
-      padding: 12px;
-      font-size: 15px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
+      padding: 10px;
+      font-size: 14px;
       background: #22c55e;
       color: #052e16;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
       font-weight: 600;
     }
     .hint {
-      margin-top: 10px;
+      margin-top: 8px;
       font-size: 12px;
       color: #94a3b8;
       text-align: center;
@@ -62,35 +56,28 @@
 </head>
 <body>
   <div class="box">
-    <h1>افزودن سابسکریپشن به Happ</h1>
-    <textarea id="link" readonly></textarea>
-    <button onclick="copyLink()">📋 کپی لینک</button>
-    <div class="hint">
-      لینک را کپی کن و داخل برنامه Happ پیست کن
-    </div>
+    <textarea id="out" readonly></textarea>
+    <button onclick="copy()">📋 کپی لینک</button>
+    <div class="hint">لینک را کپی کن و داخل Happ پیست کن</div>
   </div>
 
   <script>
-    // گرفتن لینک از URL
-    const raw = decodeURIComponent(
-      location.pathname.replace(/^\/+/, '') +
-      location.search +
-      location.hash
-    );
+    const params = new URLSearchParams(location.search);
+    const link = params.get('link');
 
-    const textarea = document.getElementById('link');
-    textarea.value = raw;
+    const out = document.getElementById('out');
 
-    function copyLink() {
-      textarea.select();
-      textarea.setSelectionRange(0, textarea.value.length);
+    if (!link) {
+      out.value = 'لینکی ارسال نشده';
+    } else {
+      out.value = decodeURIComponent(link);
+    }
 
-      try {
-        document.execCommand('copy');
-        alert('لینک کپی شد ✅\nداخل Happ پیست کن');
-      } catch (e) {
-        alert('لطفاً لینک را دستی کپی کن');
-      }
+    function copy() {
+      out.select();
+      out.setSelectionRange(0, out.value.length);
+      document.execCommand('copy');
+      alert('کپی شد ✅\nداخل Happ پیست کن');
     }
   </script>
 </body>
